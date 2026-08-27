@@ -67,7 +67,6 @@ showMessage(0);
 startRotation();
 
 // Professional staggered reveal for the service grid.
-// Content remains fully visible when JavaScript or animations are disabled.
 const servicesGrid = document.querySelector('.services');
 if (servicesGrid) {
   const serviceTiles = [...servicesGrid.querySelectorAll('.service')];
@@ -97,3 +96,31 @@ if (servicesGrid) {
     servicesGrid.classList.add('is-visible');
   }
 }
+
+// Footer logo: use exactly the same original wordmark as in the header.
+// This deliberately neutralizes older footer image/filter experiments.
+const footerWord = document.querySelector('.footer-word');
+if (footerWord) {
+  footerWord.src = 'assets/as-bau-logo.png';
+  footerWord.style.setProperty('display', 'block', 'important');
+  footerWord.style.setProperty('visibility', 'visible', 'important');
+  footerWord.style.setProperty('opacity', '1', 'important');
+  footerWord.style.setProperty('filter', 'none', 'important');
+  footerWord.style.setProperty('width', '245px', 'important');
+  footerWord.style.setProperty('height', 'auto', 'important');
+}
+
+const footerFix = document.createElement('style');
+footerFix.textContent = `
+  .footer-brand::before,
+  .footer-brand::after { display:none !important; content:none !important; }
+  .footer-word {
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    filter:none !important;
+    width:245px !important;
+    height:auto !important;
+  }
+`;
+document.head.appendChild(footerFix);
