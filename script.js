@@ -97,11 +97,10 @@ if (servicesGrid) {
   }
 }
 
-// Footer logo: use exactly the same original wordmark as in the header.
-// This deliberately neutralizes older footer image/filter experiments.
+// Footer logo: dedicated vector wordmark with white fill and black outline.
 const footerWord = document.querySelector('.footer-word');
 if (footerWord) {
-  footerWord.src = 'assets/as-bau-logo.png';
+  footerWord.src = 'assets/as-bau-logo-footer-vector.svg';
   footerWord.style.setProperty('display', 'block', 'important');
   footerWord.style.setProperty('visibility', 'visible', 'important');
   footerWord.style.setProperty('opacity', '1', 'important');
