@@ -66,6 +66,15 @@ dots.forEach((dot, index) => {
 showMessage(0);
 startRotation();
 
+// Additional vacancy: Bauhelfer.
+const jobCards = document.querySelector('.job-cards');
+if (jobCards && ![...jobCards.querySelectorAll('h3')].some(h => h.textContent.includes('Bauhelfer'))) {
+  const helperJob = document.createElement('div');
+  helperJob.className = 'job';
+  helperJob.innerHTML = '<h3>Bauhelfer (m/w/d)</h3><p>Unterstützung bei Erd-, Tiefbau- und allgemeinen Baustellenarbeiten sowie beim Material- und Geräteeinsatz.</p>';
+  jobCards.appendChild(helperJob);
+}
+
 // Professional staggered reveal for the service grid.
 const servicesGrid = document.querySelector('.services');
 if (servicesGrid) {
