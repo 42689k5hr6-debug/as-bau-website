@@ -97,6 +97,26 @@ if (servicesGrid) {
   }
 }
 
+// Slightly slower, calmer assembly motion for the service tiles.
+// The stagger remains subtle, but the full grid now builds more deliberately.
+const serviceMotionStyle = document.createElement('style');
+serviceMotionStyle.textContent = `
+  .services.reveal-ready.is-visible .service {
+    transition:
+      opacity .76s cubic-bezier(.22,.61,.36,1),
+      transform .98s cubic-bezier(.22,.61,.36,1),
+      clip-path .98s cubic-bezier(.22,.61,.36,1) !important;
+    transition-delay:calc(var(--tile-index, 0) * 115ms) !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .services.reveal-ready .service,
+    .services.reveal-ready.is-visible .service {
+      transition:none !important;
+    }
+  }
+`;
+document.head.appendChild(serviceMotionStyle);
+
 // Footer logo: dedicated vector wordmark with white fill and black outline.
 const footerWord = document.querySelector('.footer-word');
 if (footerWord) {
