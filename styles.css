@@ -386,3 +386,45 @@ img{display:block;max-width:100%}
   filter:none !important;
   opacity:1 !important;
 }
+
+/* ===== Service tile assemble animation ===== */
+.services.reveal-ready .service{
+  opacity:0;
+  transform:translateY(24px) scale(.985);
+  clip-path:inset(6% 4% 6% 4%);
+  will-change:transform,opacity,clip-path;
+}
+
+.services.reveal-ready.is-visible .service{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  clip-path:inset(0 0 0 0);
+  transition:
+    opacity .58s cubic-bezier(.22,.61,.36,1),
+    transform .72s cubic-bezier(.22,.61,.36,1),
+    clip-path .72s cubic-bezier(.22,.61,.36,1);
+  transition-delay:calc(var(--tile-index,0) * 85ms);
+}
+
+/* Very subtle grid-line emphasis while the cards assemble */
+.services.reveal-ready.is-visible .service{
+  border-color:#d9d9d9;
+}
+
+/* Dedicated footer wordmark: white fill / black outline graphic */
+.footer-word{
+  width:245px;
+  height:auto;
+  filter:none !important;
+  opacity:1 !important;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .services.reveal-ready .service,
+  .services.reveal-ready.is-visible .service{
+    opacity:1;
+    transform:none;
+    clip-path:none;
+    transition:none;
+  }
+}

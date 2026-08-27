@@ -66,15 +66,34 @@ dots.forEach((dot, index) => {
 showMessage(0);
 startRotation();
 
-// Footer logo: white letter fill with black outline; header logo remains unchanged.
-const footerWordmark = document.querySelector('.footer-word');
-if (footerWordmark) {
-  footerWordmark.style.filter = [
-    'brightness(0)',
-    'invert(1)',
-    'drop-shadow(1px 0 0 #000)',
-    'drop-shadow(-1px 0 0 #000)',
-    'drop-shadow(0 1px 0 #000)',
-    'drop-shadow(0 -1px 0 #000)'
-  ].join(' ');
+// Professional staggered reveal for the service grid.
+// Content remains fully visible when JavaScript or animations are disabled.
+const servicesGrid = document.querySelector('.services');
+if (servicesGrid) {
+  const serviceTiles = [...servicesGrid.querySelectorAll('.service')];
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  serviceTiles.forEach((tile, index) => {
+    tile.style.setProperty('--tile-index', index);
+  });
+
+  if (!reducedMotion && 'IntersectionObserver' in window) {
+    servicesGrid.classList.add('reveal-ready');
+
+    const serviceObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.18,
+      rootMargin: '0px 0px -8% 0px'
+    });
+
+    serviceObserver.observe(servicesGrid);
+  } else {
+    servicesGrid.classList.add('is-visible');
+  }
 }
