@@ -1,4 +1,3 @@
-
 document.getElementById('year')?.append(new Date().getFullYear());
 
 const menuBtn = document.querySelector('.menu-btn');
@@ -66,3 +65,16 @@ dots.forEach((dot, index) => {
 
 showMessage(0);
 startRotation();
+
+// Footer logo: white letter fill with black outline; header logo remains unchanged.
+const footerWordmark = document.querySelector('.footer-word');
+if (footerWordmark) {
+  footerWordmark.style.filter = [
+    'brightness(0)',
+    'invert(1)',
+    'drop-shadow(1px 0 0 #000)',
+    'drop-shadow(-1px 0 0 #000)',
+    'drop-shadow(0 1px 0 #000)',
+    'drop-shadow(0 -1px 0 #000)'
+  ].join(' ');
+}
