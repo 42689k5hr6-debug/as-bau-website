@@ -152,3 +152,23 @@ footerFix.textContent = `
   }
 `;
 document.head.appendChild(footerFix);
+
+// Mobile-only hero watermark correction. Desktop and tablet remain unchanged.
+const mobileHeroFix = document.createElement('style');
+mobileHeroFix.textContent = `
+  @media (max-width: 620px) {
+    .hero-watermark {
+      width: 48vw !important;
+      right: -8vw !important;
+      top: 72% !important;
+      transform: translateY(-50%) !important;
+      opacity: .025 !important;
+      filter: grayscale(1) !important;
+    }
+    .hero-main {
+      position: relative !important;
+      z-index: 2 !important;
+    }
+  }
+`;
+document.head.appendChild(mobileHeroFix);
