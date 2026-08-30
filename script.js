@@ -2,11 +2,18 @@ document.getElementById('year')?.append(new Date().getFullYear());
 
 const menuBtn = document.querySelector('.menu-btn');
 const menu = document.querySelector('.navlinks');
+
 menuBtn?.addEventListener('click', () => {
-  const open = menu.classList.toggle('open');
+  const open = menu?.classList.toggle('open') ?? false;
   menuBtn.setAttribute('aria-expanded', String(open));
 });
-menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  menu.classList.remove('open');
+  menuBtn?.setAttribute('aria-expanded', 'false');
+}));
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const messages = [
   { primary: 'Tiefbau aus der Region.', secondary: 'Sauber umgesetzt.' },
@@ -26,8 +33,15 @@ let typingTimer = null;
 function typeText(text) {
   if (!typed) return;
   clearInterval(typingTimer);
+
+  if (reducedMotion) {
+    typed.textContent = text;
+    cursor?.classList.add('is-hidden');
+    return;
+  }
+
   typed.textContent = '';
-  if (cursor) cursor.classList.remove('is-hidden');
+  cursor?.classList.remove('is-hidden');
 
   let position = 0;
   typingTimer = setInterval(() => {
@@ -37,7 +51,7 @@ function typeText(text) {
     } else {
       clearInterval(typingTimer);
       typingTimer = null;
-      if (cursor) cursor.classList.add('is-hidden');
+      cursor?.classList.add('is-hidden');
     }
   }, 68);
 }
@@ -51,6 +65,8 @@ function showMessage(index) {
 
 function startRotation() {
   clearInterval(rotationTimer);
+  if (reducedMotion) return;
+
   rotationTimer = setInterval(() => {
     showMessage((current + 1) % messages.length);
   }, 5800);
@@ -66,20 +82,10 @@ dots.forEach((dot, index) => {
 showMessage(0);
 startRotation();
 
-// Additional vacancy: Bauhelfer.
-const jobCards = document.querySelector('.job-cards');
-if (jobCards && ![...jobCards.querySelectorAll('h3')].some(h => h.textContent.includes('Bauhelfer'))) {
-  const helperJob = document.createElement('div');
-  helperJob.className = 'job';
-  helperJob.innerHTML = '<h3>Bauhelfer (m/w/d)</h3><p>Unterstützung bei Erd-, Tiefbau- und allgemeinen Baustellenarbeiten sowie beim Material- und Geräteeinsatz.</p>';
-  jobCards.appendChild(helperJob);
-}
-
 // Professional staggered reveal for the service grid.
 const servicesGrid = document.querySelector('.services');
 if (servicesGrid) {
   const serviceTiles = [...servicesGrid.querySelectorAll('.service')];
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   serviceTiles.forEach((tile, index) => {
     tile.style.setProperty('--tile-index', index);
@@ -107,7 +113,6 @@ if (servicesGrid) {
 }
 
 // Slightly slower, calmer assembly motion for the service tiles.
-// The stagger remains subtle, but the full grid now builds more deliberately.
 const serviceMotionStyle = document.createElement('style');
 serviceMotionStyle.textContent = `
   .services.reveal-ready.is-visible .service {
@@ -115,12 +120,12 @@ serviceMotionStyle.textContent = `
       opacity .76s cubic-bezier(.22,.61,.36,1),
       transform .98s cubic-bezier(.22,.61,.36,1),
       clip-path .98s cubic-bezier(.22,.61,.36,1) !important;
-    transition-delay:calc(var(--tile-index, 0) * 115ms) !important;
+    transition-delay: calc(var(--tile-index, 0) * 115ms) !important;
   }
   @media (prefers-reduced-motion: reduce) {
     .services.reveal-ready .service,
     .services.reveal-ready.is-visible .service {
-      transition:none !important;
+      transition: none !important;
     }
   }
 `;
@@ -141,14 +146,17 @@ if (footerWord) {
 const footerFix = document.createElement('style');
 footerFix.textContent = `
   .footer-brand::before,
-  .footer-brand::after { display:none !important; content:none !important; }
+  .footer-brand::after {
+    display: none !important;
+    content: none !important;
+  }
   .footer-word {
-    display:block !important;
-    visibility:visible !important;
-    opacity:1 !important;
-    filter:none !important;
-    width:245px !important;
-    height:auto !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    filter: none !important;
+    width: 245px !important;
+    height: auto !important;
   }
 `;
 document.head.appendChild(footerFix);
